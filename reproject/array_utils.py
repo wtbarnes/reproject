@@ -1,4 +1,12 @@
 import numpy as np
+try:
+    import dask_image
+except ImportError:
+    HAS_DASK = False
+else:
+    HAS_DASK = True
+    import dask.array
+    from dask_image.ndinterp import map_coordinates as dask_map_coordinates
 
 __all__ = ['map_coordinates']
 
@@ -22,7 +30,13 @@ def map_coordinates(image, coords, **kwargs):
 
     image = pad_edge_1(image)
 
-    values = scipy_map_coordinates(image, coords + 1, **kwargs)
+    if isinstance(image, dask.array.Array):
+        print('Using dask-image to do the reprojection')
+        # The output option is not supported by dask_array
+        values = kwargs.pop('output')
+        values = dask_map_coordinates(image, coords + 1, **kwargs)
+    else:
+        values = scipy_map_coordinates(image, coords + 1, **kwargs)
 
     reset = np.zeros(coords.shape[1], dtype=bool)
 
