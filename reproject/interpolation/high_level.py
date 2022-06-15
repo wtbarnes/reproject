@@ -18,7 +18,8 @@ ORDER['bicubic'] = 3
 def reproject_interp(input_data, output_projection, shape_out=None, hdu_in=0,
                      order='bilinear', independent_celestial_slices=False,
                      output_array=None, return_footprint=True,
-                     roundtrip_coords=True):
+                     roundtrip_coords=True,
+                     map_coords_func=None):
     """
     Reproject data to a new projection using interpolation (this is typically
     the fastest way to reproject an image).
@@ -92,4 +93,5 @@ def reproject_interp(input_data, output_projection, shape_out=None, hdu_in=0,
 
     return _reproject_full(array_in, wcs_in, wcs_out, shape_out=shape_out,
                            order=order, array_out=output_array,
-                           return_footprint=return_footprint, roundtrip_coords=roundtrip_coords)
+                           return_footprint=return_footprint, roundtrip_coords=roundtrip_coords,
+                           map_coords_func=map_coords_func)

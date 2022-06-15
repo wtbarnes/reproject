@@ -57,7 +57,8 @@ def _validate_array_out(array_out, array, shape_out):
 
 
 def _reproject_full(array, wcs_in, wcs_out, shape_out, order=1, array_out=None,
-                    return_footprint=True, roundtrip_coords=True):
+                    return_footprint=True, roundtrip_coords=True,
+                    map_coords_func=None):
     """
     Reproject n-dimensional data to a new projection using interpolation.
 
@@ -96,7 +97,8 @@ def _reproject_full(array, wcs_in, wcs_out, shape_out, order=1, array_out=None,
 
     # Interpolate array on to the pixels coordinates in pixel_in
     map_coordinates(array, pixel_in, order=order, cval=np.nan,
-                    mode='constant', output=array_out,).reshape(shape_out)
+                    mode='constant', output=array_out,
+                    map_coords_func=map_coords_func).reshape(shape_out)
 
     array_out.shape = shape_out
 
