@@ -32,7 +32,6 @@ def map_coordinates(image, coords, **kwargs):
         # The output option may not be supported by other implementations
         # This could be at the cost of large memory usage and we should
         # deal with this in a more elegant way at some point
-        values = kwargs.pop('output')
         values = map_coords_func(image, coords + 1, **kwargs)
 
     reset = np.zeros(coords.shape[1], dtype=bool)

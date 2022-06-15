@@ -96,9 +96,18 @@ def _reproject_full(array, wcs_in, wcs_out, shape_out, order=1, array_out=None,
         array_out = np.empty(shape_out).ravel()
 
     # Interpolate array on to the pixels coordinates in pixel_in
-    map_coordinates(array, pixel_in, order=order, cval=np.nan,
-                    mode='constant', output=array_out,
-                    map_coords_func=map_coords_func).reshape(shape_out)
+    if map_coords_func is not None:
+        array_out = map_coordinates(
+            array, pixel_in,
+            order=order,
+            cval=np.nan,
+            mode='constant',
+            map_coords_func=map_coords_func
+        ).reshape(shape_out)
+    else:
+        map_coordinates(array, pixel_in, order=order, cval=np.nan,
+                        mode='constant', output=array_out,
+                        map_coords_func=map_coords_func).reshape(shape_out)
 
     array_out.shape = shape_out
 
